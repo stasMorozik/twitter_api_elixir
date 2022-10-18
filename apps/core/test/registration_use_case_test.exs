@@ -1,4 +1,4 @@
-defmodule FakeCreate do
+defmodule FakeCreateForRegistration do
   alias User.Ports.CreatePort
   alias Common.Errors.InfrastructureError
   alias User.UserEntity
@@ -7,9 +7,7 @@ defmodule FakeCreate do
 
   @spec create(UserEntity.t()) :: CreatePort.ok() | CreatePort.error()
   def create(user_entity) do
-    list = :ets.lookup(:users, user_entity.email.value)
-    with true <- length(list) == 0 do
-      :ets.insert_new(:users, {user_entity.email.value, user_entity})
+    with true <- :ets.insert_new(:users, {user_entity.email.value, user_entity}) do
       {:ok, true}
     else
       false -> {:error, InfrastructureError.new("User already exists")}
@@ -20,7 +18,7 @@ end
 defmodule RegistrationUseCaseTest do
   use ExUnit.Case
   alias User.UseCases.RegistrationUseCase
-  alias FakeCreate
+  alias FakeCreateForRegistration
   doctest User.UseCases.RegistrationUseCase
 
   test "new user" do
@@ -28,7 +26,7 @@ defmodule RegistrationUseCaseTest do
 
     {result, _} = RegistrationUseCase.registry(
       %{name: "Name", email: "test@gmail.com", password: "123456"},
-      FakeCreate
+      FakeCreateForRegistration
     )
 
     :ets.delete(:users)
@@ -42,15 +40,33 @@ defmodule RegistrationUseCaseTest do
 
     RegistrationUseCase.registry(
       %{name: "Name", email: "test@gmail.com", password: "123456"},
-      FakeCreate
+      FakeCreateForRegistration
     )
 
     {result, _} = RegistrationUseCase.registry(
       %{name: "Name", email: "test@gmail.com", password: "123456"},
-      FakeCreate
+      FakeCreateForRegistration
     )
 
     :ets.delete(:users)
+
+    assert result == :error
+  end
+
+  test "invalid input data" do
+    {result, _} = RegistrationUseCase.registry(
+      "",
+      FakeCreateForRegistration
+    )
+
+    assert result == :error
+  end
+
+  test "invalid name" do
+    {result, _} = RegistrationUseCase.registry(
+      %{name: "Name1", email: "test@gmail.com", password: "123456"},
+      FakeCreateForRegistration
+    )
 
     assert result == :error
   end

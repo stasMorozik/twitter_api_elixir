@@ -1,10 +1,10 @@
-defmodule User.Ports.GetPort do
+defmodule User.Ports.GetByEmailPort do
   @moduledoc """
-  Documentation for `GetPort`.
+  Documentation for `GetByEmailPort`.
   """
 
   alias Common.Errors.InfrastructureError
-  alias Common.ValueObjects.IdValueObject
+  alias Common.ValueObjects.EmailValueObject
   alias User.UserEntity
 
   @type t :: Module
@@ -13,5 +13,5 @@ defmodule User.Ports.GetPort do
 
   @type error :: {:error, InfrastructureError.t()}
 
-  @callback get(IdValueObject.t()) :: ok() | error()
+  @callback get(EmailValueObject.t()) :: ok() | error()
 end

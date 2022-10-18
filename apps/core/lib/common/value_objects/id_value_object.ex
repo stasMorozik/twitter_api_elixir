@@ -20,7 +20,7 @@ defmodule Common.ValueObjects.IdValueObject do
   @spec new(binary()) :: ok() | error()
   def new(uuid) when is_binary(uuid) do
     case UUID.info(uuid) do
-      {:ok, _} -> {:ok, uuid}
+      {:ok, _} -> {:ok, %IdValueObject{value: uuid}}
       {:error, _} -> {:error, DomainError.new("Invalid id")}
     end
   end
