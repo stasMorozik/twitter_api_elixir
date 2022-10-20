@@ -9,8 +9,15 @@
 # move said applications out of the umbrella.
 import Config
 
+config :postgres_adapters, ecto_repos: [Users.Repo]
+
+config :postgres_adapters, Users.Repo,
+  database: "twitter",
+  username: "db_user",
+  password: "12345",
+  hostname: "localhost"
+
 # Sample configuration:
-#
 #     config :logger, :console,
 #       level: :info,
 #       format: "$date $time [$level] $metadata$message\n",
