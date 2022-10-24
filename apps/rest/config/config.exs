@@ -14,6 +14,14 @@ config :rest, RestWeb.Endpoint,
   pubsub_server: Rest.PubSub,
   live_view: [signing_salt: "SPh+tycd"]
 
+config :postgres_adapters, ecto_repos: [Users.Repo]
+
+config :postgres_adapters, Users.Repo,
+    database: "twitter",
+    username: "db_user",
+    password: "12345",
+    hostname: "localhost"
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

@@ -7,6 +7,10 @@ defmodule RestWeb.Router do
 
   scope "/api", RestWeb do
     pipe_through :api
+
+    post "/user/sign-up", UserController, :sign_up
+    post "/user/sign-in", UserController, :sign_in
+    delete "/user/sign-out", UserController, :sign_out
   end
 
   # Enables the Swoosh mailbox preview in development.
