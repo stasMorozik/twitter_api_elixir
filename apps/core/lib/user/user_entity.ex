@@ -40,9 +40,9 @@ defmodule User.UserEntity do
 
   @spec new(create_dto()) :: ok() | error()
   def new(create_dto) when is_map(create_dto) do
-    with {:ok, name_value_object} <- NameValueObject.new(create_dto.name),
-         {:ok, email_value_object} <- EmailValueObject.new(create_dto.email),
-         {:ok, password_value_object} <- PasswordValueObject.new(create_dto.password),
+    with {:ok, name_value_object} <- NameValueObject.new(create_dto["name"]),
+         {:ok, email_value_object} <- EmailValueObject.new(create_dto["email"]),
+         {:ok, password_value_object} <- PasswordValueObject.new(create_dto["password"]),
          {:ok, id_value_object} <- IdValueObject.new(UUID.uuid4()) do
       {
         :ok,

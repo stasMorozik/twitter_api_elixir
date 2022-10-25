@@ -3,13 +3,12 @@ defmodule User.UseCases.AuthorizationUseCase do
   Documentation for `AuthorizationUseCase`.
   """
 
-  alias User.UserEntity
   alias Common.Errors.DomainError
   alias Common.Errors.InfrastructureError
   alias Common.ValueObjects.IdValueObject
   alias User.Ports.GetPort
 
-  @type ok() :: {:ok, UserEntity.t()}
+  @type ok() :: {:ok, %{name: binary(), email: binary(), id: binary()}}
 
   @type error() :: {:error, DomainError.t() | InfrastructureError.t()}
 
@@ -17,7 +16,14 @@ defmodule User.UseCases.AuthorizationUseCase do
   def auth(id, get_port) do
     with {:ok, id_value_object} <- IdValueObject.new(id),
          {:ok, user_entity} <- get_port.get(id_value_object) do
-      {:ok, user_entity}
+      {
+        :ok,
+        %{
+          id: user_entity.id.value,
+          name: user_entity.name.value,
+          email: user_entity.email.value
+        }
+      }
     else
       {:error, some_error} -> {:error, some_error}
     end

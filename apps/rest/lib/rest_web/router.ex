@@ -10,7 +10,8 @@ defmodule RestWeb.Router do
 
     post "/user/sign-up", UserController, :sign_up
     post "/user/sign-in", UserController, :sign_in
-    delete "/user/sign-out", UserController, :sign_out
+    get "/user/sign-out", UserController, :sign_out
+    get "/user/", UserController, :authorization
   end
 
   # Enables the Swoosh mailbox preview in development.
