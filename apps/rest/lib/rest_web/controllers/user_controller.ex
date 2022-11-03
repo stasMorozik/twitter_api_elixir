@@ -9,7 +9,10 @@ defmodule RestWeb.UserController do
   alias Users.GetByEmailAdapter
 
   def sign_up(conn, params) do
-    with {:ok, _} <- RegistrationUseCase.registry(params, CreateAdapter) do
+    with {:ok, _} <- RegistrationUseCase.registry(
+      %{name: params["name"], email: params["email"], password: params["password"]},
+      CreateAdapter
+    ) do
       conn |> put_status(:ok) |> json(true)
     else
       {:error, some_error} ->
@@ -18,7 +21,10 @@ defmodule RestWeb.UserController do
   end
 
   def sign_in(conn, params) do
-    with {:ok, token} <- AuthenticationUseCase.auth(params, GetByEmailAdapter) do
+    with {:ok, token} <- AuthenticationUseCase.auth(
+      %{email: params["email"], password: params["password"]},
+      GetByEmailAdapter
+    ) do
       conn = conn |> put_resp_cookie("token", token)
       conn |> put_status(:ok) |> json(true)
     else

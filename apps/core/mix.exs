@@ -11,7 +11,8 @@ defmodule Core.MixProject do
       lockfile: "../../mix.lock",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
 
@@ -32,4 +33,7 @@ defmodule Core.MixProject do
       #{:test_adapter, in_umbrella: true}
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/fake_adapters"]
+  defp elixirc_paths(_), do: ["lib"]
 end

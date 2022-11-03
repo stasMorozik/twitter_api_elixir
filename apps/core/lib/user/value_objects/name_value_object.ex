@@ -19,7 +19,7 @@ defmodule User.ValueObjects.NameValueObject do
   @spec new(binary()) :: ok() | error()
   def new(name) when is_binary(name) do
     with true <- String.match?(name, ~r/^[a-zA-Z]+$/),
-         true <- String.length(name) > 2 do
+         true <- String.length(name) >= 2 do
       {:ok, %NameValueObject{value: name}}
     else
       false -> {:error, DomainError.new("Invalid name")}
