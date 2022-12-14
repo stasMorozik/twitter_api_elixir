@@ -1,4 +1,2 @@
-# TwitterApiElixir
-
-**TODO: Add description**
+# Twitter Api Elixir
 
