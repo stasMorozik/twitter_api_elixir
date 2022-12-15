@@ -1,7 +1,7 @@
 import Config
 
 config :postgres_adapters, Users.Repo,
-  database: "twitter",
+  database: "twitter_api_elixir",
   username: "db_user",
   password: "12345",
   hostname: "localhost",
